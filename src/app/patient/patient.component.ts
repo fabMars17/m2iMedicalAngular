@@ -65,7 +65,7 @@ export class PatientComponent implements OnInit {
         let optientsize=this.optionselctedelm.nativeElement.childNodes.length;
         console.log(this.optionselctedelm.nativeElement.childNodes);
         console.log(this.newp.ville?.nom);
-        for (let index = 0; index < optientsize; index++) {
+        /*for (let index = 0; index < optientsize; index++) {
           this.optionselctedelm.nativeElement.childNodes[index].setAttribute('selected', false);
           this.optionselctedelm.nativeElement.childNodes[index].style.backgroundColor = '';
           if(this.optionselctedelm.nativeElement.childNodes[index].textContent === this.newp.ville?.nom){
@@ -75,7 +75,7 @@ export class PatientComponent implements OnInit {
             this.optionselctedelm.nativeElement.childNodes[index].setAttribute('selected', true);
             //index=optientsize;
           }
-        }
+        }*/
       }
     );
    }
