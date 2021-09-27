@@ -20,6 +20,18 @@ export class VilleService {
   addVille( ville : Ville ) : Observable<Ville> {
     return this.http.post<Ville>( environment.apiUrl + "ville" , ville , httpOptions )
   }
+
+  editVille( ville : Ville ) : Observable<Ville> {
+    return this.http.put<Ville>( environment.apiUrl + "ville/"+ville.id , ville , httpOptions )
+  }
+
+  getVille(id? : number ) : Observable<Ville> {
+    return this.http.get<Ville>(environment.apiUrl + "ville/"+id, httpOptions);
+  }
+
+  deleteVille(id? : number ) : Observable<Ville> {
+    return this.http.delete<Ville>(environment.apiUrl + "ville/"+id, httpOptions);
+  }
 }
 
 

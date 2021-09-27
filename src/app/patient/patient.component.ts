@@ -23,6 +23,8 @@ export class PatientComponent implements OnInit {
 
   @ViewChild('closeaction') closeactionelm: any;
 
+  @ViewChild('optionselcted') optionselctedelm: any;
+
   constructor(private ps: PatientService, private vs: VilleService) { }
 
   ngOnInit(): void {
@@ -55,4 +57,33 @@ export class PatientComponent implements OnInit {
     )
   }
 
+  edit(id? : number): void {
+    this.ps.getPatient(id).subscribe(
+      data => { 
+        this.newp = data; 
+        console.log( data );
+        let optientsize=this.optionselctedelm.nativeElement.childNodes.length;
+        console.log(this.optionselctedelm.nativeElement.childNodes);
+        console.log(this.newp.ville?.nom);
+        for (let index = 0; index < optientsize; index++) {
+          this.optionselctedelm.nativeElement.childNodes[index].setAttribute('selected', false);
+          this.optionselctedelm.nativeElement.childNodes[index].style.backgroundColor = '';
+          if(this.optionselctedelm.nativeElement.childNodes[index].textContent === this.newp.ville?.nom){
+            console.log(index)
+            console.log(this.optionselctedelm.nativeElement.options[index]);
+            this.optionselctedelm.nativeElement.childNodes[index].style.backgroundColor = 'purple';
+            this.optionselctedelm.nativeElement.childNodes[index].setAttribute('selected', true);
+            //index=optientsize;
+          }
+        }
+      }
+    );
+   }
+
+  delete ( id? : number):void{
+    this.ps.deletePatient(id).subscribe(
+      data => { 
+        this.updatePatients(); 
+      }
+    )}
 }

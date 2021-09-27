@@ -20,5 +20,16 @@ export class PatientService {
     return this.http.post<Patient>( environment.apiUrl + "patient" , patient , httpOptions )
   }
 
+  editPatient( patient : Patient ) : Observable<Patient> {
+    return this.http.put<Patient>( environment.apiUrl + "patient/"+patient.id , patient , httpOptions )
+  }
+
+  getPatient(id? : number ) : Observable<Patient> {
+    return this.http.get<Patient>(environment.apiUrl + "patient/"+id, httpOptions);
+  }
+
+  deletePatient(id? : number ) : Observable<Patient> {
+    return this.http.delete<Patient>(environment.apiUrl + "patient/"+id, httpOptions);
+  }
 }
 

@@ -21,14 +21,9 @@
                 <td class="align-middle" text="">{{ville.nom}}</td>
                 <td class="align-middle" text="">{{ville.codepostal}}</td>
                 <td>
-                    
-                        <!--<form aria-label="First group" class="btn-group me-2" role="group"
-                              sec:authorize="hasRole('ROLE_ADMIN')" th:action="@{'/ville/edit/{id}'(id=${ville.id})}">
-                            <button class="btn btn-outline-primary" type="submit">Modifier</button>
-                        </form>--> 
-                       
-                            <button class="btn btn-outline-danger" [value]="ville.id" (click)="deleteTown($event)" >Supprimer</button>                  
-                 </td>
+                    <button class="btn btn-outline-primary" (click)="edit(ville.id)" data-bs-target="#exampleModal" data-bs-toggle="modal">Modifier</button>
+                    <button class="btn btn-outline-danger" (click)="delete(ville.id)" >Supprimer</button>                  
+                </td>
             </tr>
         </tbody>
 
@@ -37,7 +32,7 @@
 
 <!-- Modal Bootstrap -->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog" >
         <form name="villeForm" (submit)="submitForm()">
             <div class="modal-content">
                 <div class="modal-header">

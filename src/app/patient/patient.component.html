@@ -29,8 +29,8 @@
                 <td>
                     <div aria-label="Toolbar with button groups" class="btn-toolbar" role="toolbar">
                         <button id="rdv" class="btn btn-outline-success" type="submit">Nouveau Rdv</button>
-                        <button id="edit" class="btn btn-outline-primary" type="submit">Modifier</button>
-                        <button class="btn btn-outline-danger" type="submit">Supprimer</button>
+                        <button id="edit" class="btn btn-outline-primary" type="submit" (click)="edit(patient.id)" data-bs-target="#exampleModal" data-bs-toggle="modal" >Modifier</button>
+                        <button class="btn btn-outline-danger" (click)="delete(patient.id)" >Supprimer</button>
                     </div>
                 </td>
             </tr>
@@ -73,10 +73,10 @@
 
                     <div class="mb-3">
                         <label for="ville" class="form-label">Ville : </label>
-                        <select class="form-select col-sm-9" name="ville" [(ngModel)]="newp.ville" required>
-                            <option>Veuillez sélectionner</option>
-                            <option *ngFor="let ville of villes" [ngValue]="ville" [text]="ville.nom"></option>
-                            <!--<option *ngFor="let ville of villes" [bgValue]="ville"
+                        <select #optionselcted class="form-select selectpicker col-sm-9" showContent=true data-label-options-selected="5" name="ville" [(ngModel)]="newp.ville" required>
+                            <option   value="" disabled selected >Veuillez sélectionner</option>
+                            <option *ngFor="let ville of villes" [ngValue]="ville" [text]="ville?.nom"></option>
+                            <!--<option *ngFor="let ville of villes" [ngValue]="ville"
                                 [attr.selected]="newp.ville?.id==ville.id ? true : null">{{ville.nom}}</option>-->
                         </select>
                     </div>
