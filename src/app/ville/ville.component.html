@@ -1,0 +1,65 @@
+
+<div style="width:700px;margin-left: auto;margin-right: auto">
+    <textarea style="width: 90%">{{ villes | json }}</textarea>
+    <h1>Liste des villes</h1>
+    <button class="btn btn-primary" data-bs-target="#exampleModal" data-bs-toggle="modal" type="submit">Ajouter</button>
+
+    <button (click)="updateCities()" class="btn btn-primary">MaJ</button>
+
+    <table class="table table-striped table-hover">
+        <thead style="background-color: #c7621e; color: whitesmoke">
+            <tr>
+                <th scope="col" style="width: 45px">#</th>
+                <th scope="col">Ville</th>
+                <th scope="col">Code Postal</th>
+                <th scope="col" style="width: 220px">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let ville of villes">
+                <td class="align-middle" style="width: 60px" text="">{{ville.id}}</td>
+                <td class="align-middle" text="">{{ville.nom}}</td>
+                <td class="align-middle" text="">{{ville.codepostal}}</td>
+                <td>
+                    
+                        <!--<form aria-label="First group" class="btn-group me-2" role="group"
+                              sec:authorize="hasRole('ROLE_ADMIN')" th:action="@{'/ville/edit/{id}'(id=${ville.id})}">
+                            <button class="btn btn-outline-primary" type="submit">Modifier</button>
+                        </form>--> 
+                       
+                            <button class="btn btn-outline-danger" [value]="ville.id" (click)="deleteTown($event)" >Supprimer</button>                  
+                 </td>
+            </tr>
+        </tbody>
+
+    </table>
+</div>
+
+<!-- Modal Bootstrap -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <form name="villeForm" (submit)="submitForm()">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Ajouter une ville</h5>
+                    <button #closeaction type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="nom" class="form-label">Nom</label>
+                        <input type="text" class="form-control" id="nom" name="nom" placeholder="Nom" [(ngModel)]="newv.nom" minlength="2" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="cp" class="form-label">Code Postal</label>
+                        <input type="text" class="form-control" id="cp" name="cp" placeholder="Code Postal" [(ngModel)]="newv.codepostal" minlength="2" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-secondary">Valider</button>
+                    <button type="reset" class="btn btn-danger float-end" data-dismiss="modal">Annuler</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
