@@ -8,6 +8,7 @@ import { VilleService } from '../service/ville.service';
 
 let newPatient = true;
 
+
 @Component({
   selector: 'app-patient',
   templateUrl: './patient.component.html',
@@ -15,7 +16,8 @@ let newPatient = true;
 })
 
 export class PatientComponent implements OnInit {
-
+  succes = false;
+  error = false;
   //ville = new Ville(10,"Brest",29000);
   //patient = new Patient(4, "roger", "Seb", "roger@sb.eu","0607089020", this.ville);
   villes: Array<Ville> = [];
@@ -25,7 +27,7 @@ export class PatientComponent implements OnInit {
 
   @ViewChild('closeaction') closeactionelm: any;
 
-  @ViewChild('optionselcted') optionselctedelm: any;
+  @ViewChild('optionselcted') optionselectedelm: any;
 
   constructor(private ps: PatientService, private vs: VilleService) { }
 
@@ -49,6 +51,8 @@ export class PatientComponent implements OnInit {
   }
 
   add(): void {
+    this.succes = false;
+    this.error = false;
     newPatient = true;
     this.newp.id=undefined;
     this.newp.nom=undefined;
@@ -60,12 +64,18 @@ export class PatientComponent implements OnInit {
   }
 
   submitForm(): void {
+    
     if(newPatient){
       this.ps.addPatient(this.newp).subscribe(
             data => {
               console.log(data);
               this.closeactionelm.nativeElement.click();
               this.updatePatients();
+              this.succes = true;
+            } ,
+            error => {
+              console.log(error);
+              this.error = true;
             })
     }else{
       this.ps.editPatient(this.newp).subscribe(
@@ -73,6 +83,10 @@ export class PatientComponent implements OnInit {
           console.log(data);
           this.closeactionelm.nativeElement.click();
           this.updatePatients();
+        } ,
+        error => {
+          console.log(error);
+          this.error = true;
         })
     }
     console.log(this.newp);
@@ -80,33 +94,50 @@ export class PatientComponent implements OnInit {
   }
 
   edit(id? : number): void {
+    this.succes = false;
+    this.error = false;
     newPatient = false;
     this.ps.getPatient(id).subscribe(
       data => { 
         this.newp = data; 
         console.log( data );
-        let optientsize=this.optionselctedelm.nativeElement.childNodes.length;
-        console.log(this.optionselctedelm.nativeElement.childNodes);
-        console.log(this.newp.ville?.nom);
-        /*for (let index = 0; index < optientsize; index++) {
-          this.optionselctedelm.nativeElement.childNodes[index].setAttribute('selected', false);
-          this.optionselctedelm.nativeElement.childNodes[index].style.backgroundColor = '';
-          if(this.optionselctedelm.nativeElement.childNodes[index].textContent === this.newp.ville?.nom){
+
+        this.optionselectedelm.nativeElement.options[20].setAttribute('selected', '')
+        /*let optientsize=this.optionselectedelm.nativeElement.childNodes.length-1;
+        console.log(this.optionselectedelm.nativeElement.childNodes);
+      
+        for (let index = 1; index < optientsize; index++) {
+          //this.optionselctedelm.nativeElement.options[index].selected = '';
+          //this.optionselectedelm.nativeElement.options[index].setAttribute('selected', 'false')
+          //this.optionselectedelm.nativeElement.options[index].removeAttribute('selected');
+          //this.optionselectedelm.nativeElement.options[index].selected = false;
+          if(this.optionselectedelm.nativeElement.childNodes[index].textContent === this.newp.ville?.nom){
             console.log(index)
-            console.log(this.optionselctedelm.nativeElement.options[index]);
-            this.optionselctedelm.nativeElement.childNodes[index].style.backgroundColor = 'purple';
-            this.optionselctedelm.nativeElement.childNodes[index].setAttribute('selected', true);
+            //console.log(this.optionselectedelm.nativeElement.options[index]);
+            //this.optionselctedelm.nativeElement.options[index].style.backgroundColor = 'purple';
+            //this.optionselctedelm.nativeElement.options[index].selected = 'selected';
+            //this.optionselectedelm.nativeElement.options[index].setAttribute('selected', '')
+            //this.optionselectedelm.nativeElement.options[index].selected = true;
             //index=optientsize;
           }
         }*/
       }
+      
+
     );
    }
 
+   checkVille(a : Ville, b: Ville) : boolean {
+     return a != undefined && b != undefined && a.id == b.id;
+   }
+
   delete ( id? : number):void{
+    if(confirm ("Etes vous sur ?")){
     this.ps.deletePatient(id).subscribe(
       data => { 
         this.updatePatients(); 
       }
     )}
+  }
+
 }

@@ -1,5 +1,7 @@
 <div style="width: 90%;margin-left: auto;margin-right: auto">
     <textarea>{{ patients | json }}</textarea>
+    <div class="alert alert-success" *ngIf="succes">Patient Correctement Ajouter</div>
+    
     <h1>Liste des patients</h1>
     <button class="btn btn-primary" (click)="add()" data-bs-target="#exampleModal" data-bs-toggle="modal" type="submit">Ajouter</button>
 
@@ -43,10 +45,12 @@
             <div class="modal-content">
                 {{ newp | json}}
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Ajouter un Patient</h5>
+                    <h5 class="modal-title" id="exampleModalLabel" *ngIf=" newp.id == undefined">Ajouter un Patient</h5>
+                    <h5 class="modal-title" id="exampleModalLabel" *ngIf=" newp.id != undefined">Editer un Patient</h5>
                     <button type="button" #closeaction class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
+                    <div class="alert alert-warning" *ngIf="error">Un probleme de saisie a ete detecter</div>
                     <div class="mb-3">
                         <label for="nom" class="form-label">Nom</label>
                         <input type="text" class="form-control" id="nom" name="nom" placeholder="Martin"
@@ -70,11 +74,11 @@
 
                     <div class="mb-3">
                         <label for="ville" class="form-label">Ville : </label>
-                        <select #optionselcted class="form-select selectpicker col-sm-9" showContent=true data-label-options-selected="5" name="ville" [(ngModel)]="newp.ville" required>
+                        <select #optionselcted class='form-control' name="ville" [(ngModel)]="newp.ville" [compareWith]="checkVille" required>
                             <option   value="" disabled selected >Veuillez sélectionner</option>
-                            <option *ngFor="let ville of villes" [ngValue]="ville" [text]="ville?.nom"></option>
-                            <!--<option *ngFor="let ville of villes" [ngValue]="ville"
-                                [attr.selected]="newp.ville?.id==ville.id ? true : null">{{ville.nom}}</option>-->
+                            <option *ngFor="let ville of villes" [ngValue]="ville" [text]="ville?.nom" ></option>
+                             <!--<option *ngFor="let ville of villes" [ngValue]="ville"
+                                [attr.selected]="newp.ville?.id==ville.id ? '' : null">{{ville.nom}}</option>-->
                         </select>
                     </div>
                 </div>

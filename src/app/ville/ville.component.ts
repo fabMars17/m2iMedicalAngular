@@ -74,12 +74,13 @@ export class VilleComponent implements OnInit {
   }
 
   delete(id?: number): void {
+    if(confirm ("Etes vous sur ?")){
     this.vs.deleteVille(id).subscribe(
       data => {
         this.updateCities();
       }
     );
-
+    }
   }
   /*  https://angular.io/guide/binding-syntax   */
   /*  https://angular.io/guide/property-binding */
