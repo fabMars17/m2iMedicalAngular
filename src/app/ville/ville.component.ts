@@ -5,7 +5,7 @@ import { environment } from 'src/environments/environment';
 import { Input } from '@angular/core';
 import { VilleService } from '../service/ville.service';
 
-
+let newVille = true;
 
 @Component({
   selector: 'app-ville',
@@ -16,8 +16,8 @@ import { VilleService } from '../service/ville.service';
 export class VilleComponent implements OnInit {
 
   //ville = new Ville(12,"Dijon",82000);
-  villes  : Array<Ville> = [];
-  newv : Ville = new Ville();
+  villes: Array<Ville> = [];
+  newv: Ville = new Ville();
 
   @ViewChild('closeaction') closeactionelm: any;
   //@Input()  nom : string = ""
@@ -27,74 +27,71 @@ export class VilleComponent implements OnInit {
     this.updateCities();
   }
 
-  updateCities() : void {
+  updateCities(): void {
     this.vs.loadCities().subscribe(
-     data => { 
-       this.villes = data; 
-       console.log( data );
-     }
-   )}
+      data => {
+        this.villes = data;
+        console.log(data);
+      }
+    )
+  }
 
-   add(): void{ 
-      this.vs.addVille(this.newv).subscribe(
-        data => { 
-          console.log( data );
-          this.closeactionelm.nativeElement.click();
-          this.updateCities();
-        }
-      )
-   }
+  add(): void {
+    newVille = true;
+    this.newv.id=undefined;
+    this.newv.nom=undefined;
+    this.newv.codepostal=undefined;
+    console.log(this.newv);
+  }
 
-   submitForm() : void {
-     console.log(this.newv);
-     /*if(this.newv.id == undefined || this.newv.id == 0){// add new ville
+  submitForm(): void {
+    if (newVille) {// add new ville
       this.vs.addVille(this.newv).subscribe(
-            data => { 
-              console.log( data );
-              this.closeactionelm.nativeElement.click();
-              this.updateCities();
-            }
-          )
-     }
-     else {*/// edit update ville
+      data => {
+        console.log(data);
+        this.closeactionelm.nativeElement.click();
+        this.updateCities();
+      })
+    }
+    else {
       this.vs.editVille(this.newv).subscribe(
-        data => { 
+        data => {
+          console.log(data);
           this.closeactionelm.nativeElement.click();
           this.updateCities();
-        }
-      )
-     //}
-     
-   }
+        })
+    }
+  }
 
-   edit(id? : number): void {
+  edit(id?: number): void {
+    newVille = false;
     this.vs.getVille(id).subscribe(
-      data => { 
-        this.newv = data; 
-        console.log( data );
+      data => {
+        this.newv = data;
+        console.log(data);
       }
     );
-   }
+  }
 
-   delete ( id? : number):void{
+  delete(id?: number): void {
     this.vs.deleteVille(id).subscribe(
-      data => { 
-        this.updateCities(); 
+      data => {
+        this.updateCities();
       }
     );
 
   }
-/*  https://angular.io/guide/binding-syntax   */
-/*  https://angular.io/guide/property-binding */ 
-/*  https://angular.io/guide/event-binding // see --> live exmeples */
-   /*deleteTown(event?: MouseEvent) : void {
-    let posv = 0;
-    for (let index = 0; index < this.villes.length; index++) {
-      if(this.villes[index].id == id){posv=index;index=this.villes.length}
-    }
-    //const d=event ?(event.currentTarget as HTMLButtonElement).value : '';
-    //this.http.delete( environment.apiUrl  + "ville/delete/" + d ,
-    //httpOptions ).subscribe((s)=> {console.log(s);this.updateCities();})
+  /*  https://angular.io/guide/binding-syntax   */
+  /*  https://angular.io/guide/property-binding */
+  /*  https://angular.io/guide/event-binding // see --> live exmeples */
+  /*deleteTown(event?: MouseEvent) : void {
+   let posv = 0;
+   for (let index = 0; index < this.villes.length; index++) {
+     if(this.villes[index].id == id){posv=index;index=this.villes.length}
+   }
+   //const d=event ?(event.currentTarget as HTMLButtonElement).value : '';
+   //this.http.delete( environment.apiUrl  + "ville/delete/" + d ,
+   //httpOptions ).subscribe((s)=> {console.log(s);this.updateCities();})
 
-   }*/
+  }*/
 }

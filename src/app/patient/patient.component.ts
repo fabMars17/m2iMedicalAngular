@@ -6,6 +6,8 @@ import { environment } from 'src/environments/environment';
 import { PatientService } from '../service/patient.service';
 import { VilleService } from '../service/ville.service';
 
+let newPatient = true;
+
 @Component({
   selector: 'app-patient',
   templateUrl: './patient.component.html',
@@ -46,18 +48,39 @@ export class PatientComponent implements OnInit {
     );
   }
 
-  submitForm(): void {
+  add(): void {
+    newPatient = true;
+    this.newp.id=undefined;
+    this.newp.nom=undefined;
+    this.newp.prenom=undefined;
+    this.newp.email=undefined;
+    this.newp.telephone=undefined;
+    this.newp.ville=undefined;
     console.log(this.newp);
-    this.ps.addPatient(this.newp).subscribe(
-      data => {
-        console.log(data);
-        this.closeactionelm.nativeElement.click();
-        this.updatePatients();
-      }
-    )
+  }
+
+  submitForm(): void {
+    if(newPatient){
+      this.ps.addPatient(this.newp).subscribe(
+            data => {
+              console.log(data);
+              this.closeactionelm.nativeElement.click();
+              this.updatePatients();
+            })
+    }else{
+      this.ps.editPatient(this.newp).subscribe(
+        data => {
+          console.log(data);
+          this.closeactionelm.nativeElement.click();
+          this.updatePatients();
+        })
+    }
+    console.log(this.newp);
+    
   }
 
   edit(id? : number): void {
+    newPatient = false;
     this.ps.getPatient(id).subscribe(
       data => { 
         this.newp = data; 

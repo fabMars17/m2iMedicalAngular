@@ -2,7 +2,7 @@
 <div style="width:700px;margin-left: auto;margin-right: auto">
     <textarea style="width: 90%">{{ villes | json }}</textarea>
     <h1>Liste des villes</h1>
-    <button class="btn btn-primary" data-bs-target="#exampleModal" data-bs-toggle="modal" type="submit">Ajouter</button>
+    <button class="btn btn-primary" (click)="add()" data-bs-target="#exampleModal" data-bs-toggle="modal" type="submit">Ajouter</button>
 
     <button (click)="updateCities()" class="btn btn-primary">MaJ</button>
 
