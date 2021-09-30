@@ -1,0 +1,24 @@
+<p>ville-details works!</p>
+{{ ville | json}}
+
+<form name="villeForm" (submit)="submitForm()">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Ajouter une ville</h5>
+            <button #closeaction type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <div class="mb-3">
+                <label for="nom" class="form-label">Nom</label>
+                <input type="text" class="form-control" id="nom" name="nom" placeholder="Nom" [(ngModel)]="ville.nom" minlength="2" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="cp" class="form-label">Code Postal</label>
+                <input type="text" class="form-control" id="cp" name="cp" placeholder="Code Postal" [(ngModel)]="ville.codepostal" minlength="2" required>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="submit" class="btn btn-secondary">Valider</button>
+            <button type="reset" class="btn btn-danger float-end" data-dismiss="modal">Annuler</button>
+        </div>
+</form>

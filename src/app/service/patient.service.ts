@@ -12,9 +12,19 @@ export class PatientService {
 
   constructor( private http: HttpClient) { }
 
-  loadPatient() : Observable<Patient[]> {
+  /*loadPatient() : Observable<Patient[]> {
     return this.http.get<Patient[]>(environment.apiUrl + "patient", httpOptions);
-  }
+  }*/
+    loadPatient( search: String ): Observable<Patient[]> {
+      console.log("chargement des villes");
+      let searchCondition = ""
+  
+      if( search.length > 0 ){
+        searchCondition = "?search="+search; 
+      }
+      return this.http.get<Patient[]>( environment.apiUrl  + "patient"+searchCondition , httpOptions );
+    }
+  
 
   addPatient( patient : Patient ) : Observable<Patient> {
     return this.http.post<Patient>( environment.apiUrl + "patient" , patient , httpOptions )

@@ -1,10 +1,11 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
 import { Patient } from '../classes/patient';
 import { Ville } from '../classes/ville';
 import { environment } from 'src/environments/environment';
 import { PatientService } from '../service/patient.service';
 import { VilleService } from '../service/ville.service';
+import { EventManager } from '@angular/platform-browser';
 
 let newPatient = true;
 
@@ -16,8 +17,10 @@ let newPatient = true;
 })
 
 export class PatientComponent implements OnInit {
+  
   succes = false;
   error = false;
+  search : String  = "" ; 
   //ville = new Ville(10,"Brest",29000);
   //patient = new Patient(4, "roger", "Seb", "roger@sb.eu","0607089020", this.ville);
   villes: Array<Ville> = [];
@@ -26,23 +29,29 @@ export class PatientComponent implements OnInit {
   newp: Patient = new Patient();
 
   @ViewChild('closeaction') closeactionelm: any;
+  @ViewChild('optionselected') optionselectedelm: ElementRef | undefined ;
+  @ViewChild('modal') modalelm:ElementRef | undefined ;
 
-  @ViewChild('optionselcted') optionselectedelm: any;
+  @HostListener('window:mousemove', ['$event'])
+    onResize(event : MouseEvent) {
+      //this.mouseCoord(event)
+    }
 
-  constructor(private ps: PatientService, private vs: VilleService) { }
+  constructor( private ps: PatientService, private vs: VilleService) { }
 
   ngOnInit(): void {
     this.updatePatients();
-  }
 
+  }
+  
   updatePatients(): void {
-    this.ps.loadPatient().subscribe(
+    this.ps.loadPatient(this.search).subscribe(
       data => {
         this.patients = data;
         console.log(data);
       }
     )
-    this.vs.loadCities().subscribe(
+    this.vs.loadCities("").subscribe(
       data => {
         console.log(data);
         this.villes = data;
@@ -101,8 +110,9 @@ export class PatientComponent implements OnInit {
       data => { 
         this.newp = data; 
         console.log( data );
-
-        this.optionselectedelm.nativeElement.options[20].setAttribute('selected', '')
+        console.log(this.modalelm?.nativeElement.style.display);
+        //this.optionselectedelm?.nativeElement.childNodes[20].setAttribute('selected', '')
+        this.optionselectedelm?.nativeElement.childNodes[20].removeAttribute('selected')
         /*let optientsize=this.optionselectedelm.nativeElement.childNodes.length-1;
         console.log(this.optionselectedelm.nativeElement.childNodes);
       
@@ -122,13 +132,23 @@ export class PatientComponent implements OnInit {
           }
         }*/
       }
-      
-
     );
    }
 
+  mouseCoord(event : any){
+    if(this.modalelm?.nativeElement.style.display!='block'){
+        let w= 'x: ' +event.pageX+ ', ' + 'y: ' +event.pageY;
+        w+=''
+        console.log(w);
+    }
+  }  
+     
    checkVille(a : Ville, b: Ville) : boolean {
      return a != undefined && b != undefined && a.id == b.id;
+   }
+
+   ShowVille(){
+     console.log("Surprise !!")
    }
 
   delete ( id? : number):void{

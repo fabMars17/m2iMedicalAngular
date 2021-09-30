@@ -18,6 +18,7 @@ export class VilleComponent implements OnInit {
   //ville = new Ville(12,"Dijon",82000);
   villes: Array<Ville> = [];
   newv: Ville = new Ville();
+  search : String = "";
 
   @ViewChild('closeaction') closeactionelm: any;
   //@Input()  nom : string = ""
@@ -28,7 +29,7 @@ export class VilleComponent implements OnInit {
   }
 
   updateCities(): void {
-    this.vs.loadCities().subscribe(
+    this.vs.loadCities( this.search).subscribe(
       data => {
         this.villes = data;
         console.log(data);

@@ -13,7 +13,8 @@ export class VilleService {
 
   constructor( private http: HttpClient) { }
 
-  loadCities() : Observable<Ville[]> {
+  //loadCities() : Observable<Ville[]> {
+  loadCities( search : String ): Observable<Ville[]> {
     return this.http.get<Ville[]>(environment.apiUrl + "ville", httpOptions);
   }
 
